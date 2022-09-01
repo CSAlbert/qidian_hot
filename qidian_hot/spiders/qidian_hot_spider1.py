@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 @Author   : chulang
-@DateTime : 2022/8/31 9:41
-@File     : qidian_hot_spider.py
-@Describe : 起点热门小说排行爬取
-            基本款
-            执行：scrapy crawl hot -o hot.csv
+@DateTime : 2022/9/1 18:43
+@File     : qidian_hot_spider1.py
+@Describe : 通过设置请求头、自定义实现解析函数
 """
 
 from scrapy import Request
@@ -14,13 +12,27 @@ from scrapy.spiders import Spider
 
 class HotSalesSpider(Spider):
     # 定义爬虫名称
-    name = 'hot'
+    name = 'hot1'
 
-    # 起始的URL列表
-    start_urls = ["https://www.qidian.com/rank/hotsales/page1/", "https://www.qidian.com/rank/hotsales/page2/"]
+    # 更通用的做法是在配置文件中设置User-Agent
+    # # 设置用户代理（浏览器类型）
+    # qidian_headers = {
+    #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"}
+
+    # 获取初始化
+    def start_requests(self):
+        url = "https://www.qidian.com/rank/hotsales/page1/"
+        # 生成请求对象，设置url、headers、callback
+        yield Request(url,
+                      # headers=self.qidian_headers,
+                      callback=self.qidian_parse)
+
+
+    # # 起始的URL列表
+    # start_urls = ["https://www.qidian.com/rank/hotsales/page1/", "https://www.qidian.com/rank/hotsales/page2/"]
 
     # 解析函数
-    def parse(self, response):
+    def qidian_parse(self, response):
         # 使用xpath定位到小说内容的div元素，保存到列表中
         list_selector = response.xpath("//*[@class='book-mid-info']")
         print(list_selector)

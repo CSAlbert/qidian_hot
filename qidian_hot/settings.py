@@ -17,7 +17,8 @@ NEWSPIDER_MODULE = 'qidian_hot.spiders'
 
 FEED_EXPORT_ENCODING = 'GBK'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'qidian_hot (+http://www.yourdomain.com)'
+# 更通用的做法是在配置文件中设置User-Agent
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
 
 # Obey robots.txt rules
 # robots协议

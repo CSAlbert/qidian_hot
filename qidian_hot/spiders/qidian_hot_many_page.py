@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 @Author   : chulang
-@DateTime : 2022/8/31 9:41
-@File     : qidian_hot_spider.py
-@Describe : 起点热门小说排行爬取
-            基本款
-            执行：scrapy crawl hot -o hot.csv
+@DateTime : 2022/9/1 18:43
+@File     : qidian_hot_spider1.py
+@Describe : 通过设置请求头、自定义实现解析函数
 """
 
 from scrapy import Request
@@ -14,13 +12,19 @@ from scrapy.spiders import Spider
 
 class HotSalesSpider(Spider):
     # 定义爬虫名称
-    name = 'hot'
+    name = 'hot_page'
 
-    # 起始的URL列表
-    start_urls = ["https://www.qidian.com/rank/hotsales/page1/", "https://www.qidian.com/rank/hotsales/page2/"]
+    # 设置当前页，起始为1
+    current_page = 1
+
+    # 获取初始化
+    def start_requests(self):
+        url = "https://www.qidian.com/rank/hotsales/page1/"
+        # 生成请求对象，设置url、headers、callback
+        yield Request(url, callback=self.qidian_parse)
 
     # 解析函数
-    def parse(self, response):
+    def qidian_parse(self, response):
         # 使用xpath定位到小说内容的div元素，保存到列表中
         list_selector = response.xpath("//*[@class='book-mid-info']")
         print(list_selector)
@@ -40,3 +44,13 @@ class HotSalesSpider(Spider):
             hot_dict = {"name": name, "author": author, "type": type, "form": form}
             # 每接收一条数据就提交到引擎，进行后续处理，节省内存，提高执行效率
             yield hot_dict
+
+        # 获取下一页URL，并生成Request请求，提交给引擎
+        # 1. 获取下一页URL
+        self.current_page += 1
+        if self.current_page <= 5:
+            next_url = "https://www.qidian.com/rank/hotsales/page{}/" .format(self.current_page)
+
+            print(next_url)
+            # 2. 根据URL生成Request，使用yield返回给引擎
+            yield Request(next_url, callback=self.qidian_parse)
