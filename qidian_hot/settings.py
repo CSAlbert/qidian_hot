@@ -12,8 +12,8 @@ BOT_NAME = 'qidian_hot'
 SPIDER_MODULES = ['qidian_hot.spiders']
 NEWSPIDER_MODULE = 'qidian_hot.spiders'
 
-# 设置日志的等级
-# LOG_LEVEL = 'WARNING'
+# 设置日志的等级ERROR、WARNING、INFO
+LOG_LEVEL = 'WARNING'
 
 FEED_EXPORT_ENCODING = 'GBK'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -70,6 +70,11 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 #ITEM_PIPELINES = {
 #    'qidian_hot.pipelines.QidianHotPipeline': 300,
 #}
+ITEM_PIPELINES = {
+   'qidian_hot.pipelines.QidianHotPipeline': 300,
+   'qidian_hot.pipelines.DuplicatesPipeline': 100,
+}
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

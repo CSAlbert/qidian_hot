@@ -43,7 +43,7 @@ class HotSalesSpider(Spider):
             # 使用XPath选择器获取类型
             novel.add_xpath("type", "p[1]/a[2]/text()")
             # 使用CSS选择器获取小说形式（连载还是完本）
-            novel.add_css("form", "p[1]/span/text()")
+            novel.add_xpath("form", "p[1]/span/text()")
             # 将提取好的数据load出来，并使用yield返回
             yield novel.load_item()
 

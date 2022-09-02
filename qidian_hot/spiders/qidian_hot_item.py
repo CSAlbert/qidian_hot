@@ -29,7 +29,7 @@ class HotSalesSpider(Spider):
     def qidian_parse(self, response):
         # 使用xpath定位到小说内容的div元素，保存到列表中
         list_selector = response.xpath("//*[@class='book-mid-info']")
-        print(list_selector)
+        # print(list_selector)
 
         # 依次读取每部小说的元素，从中获取名称、作者、类型和形式
         for one_selector in list_selector:
